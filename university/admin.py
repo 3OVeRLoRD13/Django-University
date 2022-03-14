@@ -8,4 +8,4 @@ admin.site.register(Department)
 admin.site.register(Course)
 admin.site.register(Master)
 admin.site.register(Student)
-
+admin.site.register(Like)

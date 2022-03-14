@@ -43,18 +43,6 @@ class Course(models.Model):
         return self.title + self.department
 
 
-class Master(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    national_ID = models.CharField(max_length=10)
-    phone_number = models.CharField(max_length=11)
-    department_ID = models.CharField(max_length=255)
-    degree = models.CharField(max_length=255)
-    room = models.CharField(max_length=255)
-
-    
-    def __str__(self):
-        return self.first_name + self.last_name
 
 
 class Student(models.Model):
@@ -66,4 +54,39 @@ class Student(models.Model):
     
     def __str__(self):
         return self.first_name + self.last_name
+    
+class Master(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    national_ID = models.CharField(max_length=10)
+    phone_number = models.CharField(max_length=11)
+    department_ID = models.CharField(max_length=255)
+    degree = models.CharField(max_length=255)
+    room = models.CharField(max_length=255)
+    likes = models.ManyToManyField(Student, related_name='Likes', default=None, blank=True)
+    
+
+    def num_likes(self):
+        return self.likes.all().count()
+    
+    
+    def __str__(self):
+        return self.first_name + self.last_name
+    
+
+LIKE_CHOICES = (
+    ('LIKE', 'LIKE'),
+    ('Dislike', 'Dislike'),
+)
+
+
+class Like(models.Model):
+    master = models.ForeignKey(Master, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    value = models.CharField(max_length=10, choices=LIKE_CHOICES, default='LIKE')
+    
+    
+    def __str__(self):
+        return str(self.master)
+    
     
